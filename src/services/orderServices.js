@@ -6,6 +6,18 @@ const conn = require("../config/bd");
     return countOrders[0];
   };
 
+  const getCountOrdersLlevar = async (id_mod) => {
+    const countOrders = await conn.query("SELECT COUNT(*) AS count_orders_llevar FROM pedido WHERE id_mod = ?");
+  
+    return countOrders[0];
+  };
+
+  const updateEstadoPedidoById = async (id_ped, estado) => {
+    const countOrders= await conn.query("UPDATE `pedido` SET `id_epedido` = '?' WHERE (`id_ped` = '?');",id_usu,estado);
+
+    return countOrders[0];
+  };
+
   const getCountOrdersByWaiter = async (id_usu) =>{
     const countOrders= await conn.query("SELECT COUNT(*) AS count_orders_day FROM pedido WHERE id_usu=? AND DATE_FORMAT(fecha_ped,'%Y-%m-%d')=curdate()",[id_usu])
     return countOrders[0];
@@ -36,9 +48,14 @@ const conn = require("../config/bd");
     return pedido;
   }
 
+  const getNumberTableByOrder = async(id_ped) =>{
+    const pedido = await conn.query("SELECT m.numero_mesa AS num_mesa FROM pedido p JOIN mesa_pedido mp ON p.id_ped = mp.id_ped JOIN mesa m ON mp.id_mesa = m.id_mesa WHERE p.id_ped = ?",[id_ped]);
+    
+    return pedido[0];
+  }
 
   const getOrderByTable = async (numero_mesa) =>{
-    const orders= await conn.query("SELECT p.id_ped, p.id_usu, CONCAT(u.nom_usu, ' ', u.ape1_usu, ' ', u.ape2_usu) AS nom_usu, p.id_cli, c.nom_cli FROM pedido p JOIN mesa_pedido mp ON mp.id_ped = p.id_ped JOIN mesa m ON m.id_mesa = mp.id_mesa JOIN usuario u ON u.id_usu = p.id_usu JOIN cliente c ON c.id_cli = p.id_cli WHERE numero_mesa = ?",[numero_mesa])
+    const orders= await conn.query("SELECT p.id_ped, p.id_usu, CONCAT(u.nom_usu, ' ', u.ape1_usu, ' ', u.ape2_usu) AS nom_usu, p.id_cli, c.nom_cli FROM pedido p JOIN usuario u ON u.id_usu = p.id_usu LEFT JOIN cliente c ON c.id_cli = p.id_cli WHERE p.cod_ped = ?",[numero_mesa])
 
     return orders;
   };
@@ -120,7 +137,9 @@ const updateStateOrder=async(idorder,idstate)=>{
 }
 
 module.exports = {
+  updateEstadoPedidoById,
   getCountOrders,
+  getCountOrdersLlevar,
   getCountOrdersByWaiter,
   getCountOrderWait,
   getCountOrderPrepared,
@@ -128,7 +147,8 @@ module.exports = {
   getPedido,
   getPedidoDetalle,
   UpdateEstadoPedido,
-  getOrdersByTable,
+  getNumberTableByOrder,
+  getOrderByTable,
   getOrderDetailsByOrder,
   createOrder,
   createDetailOrder,

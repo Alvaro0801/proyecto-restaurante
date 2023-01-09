@@ -44,7 +44,7 @@ const renderTables = (tables, panelMesas) => {
         listHTML += `<div class="col-mesa mesa-disponible">${table.numero_mesa}</div>`;
         break;
       case 2:
-        listHTML += `<div class="col-mesa mesa-ocupada">${table.numero_mesa}</div>`;
+        listHTML += `<div class="col-mesa mesa-ocupada"><a href="/pago?cod=${table.cod_ped}">${table.numero_mesa}</a></div>`;        
         break;
       case 3:
         listHTML += `<div class="col-mesa mesa-inhabilitada">${table.numero_mesa}</div>`;
@@ -57,11 +57,4 @@ const renderTables = (tables, panelMesas) => {
 selectPisos.addEventListener("change", async (e) => {
   let mesas = await getTableByFloor(e.target.value);
   renderTables(mesas, panelMesas);
-});
-
-panelMesas.addEventListener("click", (e) => {
-  const mesaEtiqueta = e.target;
-  if (mesaEtiqueta.classList.value == "col-mesa mesa-ocupada") {
-    window.location.href = "/realizar-pago/?mesa=" + mesaEtiqueta.innerHTML;
-  }
 });

@@ -22,6 +22,7 @@ class Server {
       stats: "/api/stats",
       cheff: "/api/cocina",
       order:"/api/order",
+      pay:"/api/pay",
       client:"/api/client",
     };
 
@@ -73,6 +74,7 @@ class Server {
     this.app.use(this.paths.stats, require("./routes/stats.routes"));
     this.app.use(this.paths.cheff, require("./routes/cocina.routes"));
     this.app.use(this.paths.order, require("./routes/order.routes"));
+    this.app.use(this.paths.pay, require("./routes/pay.routes"));
     this.app.use(this.paths.client, require("./routes/client.routes"));
     this.app.use(require("./routes/interface/indexInterface"));
     this.app.use(require("./routes/interface/adminInterface"));

@@ -1,16 +1,32 @@
 const con = require("../config/bd");
 
-    const getCountOrders = async () => {
-        const countOrders = await con.query("SELECT COUNT(*) AS count_orders FROM pedido");
-        return countOrders[0];
+    const getCountPays = async () => {
+        const countPays = await con.query("SELECT COUNT(*) AS count_pays FROM pago");
+        return countPays[0];
+    };
+    
+    const getPays = async () => {
+        const pays = await con.query("SELECT * FROM pago");
+      
+        if (!pays) throw new Error();
+        return pays;
+    };
+    
+    const getPay = async (id_pago) => {
+        const pay = await con.query("SELECT * FROM pago WHERE id_pago = ?",id_pago);
+        if (!pay) throw new Error();
+        return pay;
     };
 
-    const getOrderByTable = async (numero_mesa) => {
-        const orders= await con.query("SELECT p.id_ped, p.id_usu, p.id_cli, p.id_epedido, p.id_mod FROM pedido p JOIN mesa_pedido mp ON mp.id_ped = p.id_ped JOIN mesa m ON m.id_mesa = mp.id_mesa WHERE numero_mesa = ?",[numero_mesa])
-        return orders;
+    const createPay = async (id_mpago, id_ped, fecha_pago, total_pago) => {
+        const pay = await con.query("INSERT INTO pago (`id_mpago`, `id_ped`, `fecha_pago`, `total_pago`) VALUES ('?', '?', '?', '?')",id_ped, id_mpago, fecha_pago, total_pago);
+        if (!pay) throw new Error();
+        return pay;
     };
-
+      
 module.exports = {
-    getCountOrders,
-    getOrderByTable
+    getCountPays,
+    getPays,
+    getPay,
+    createPay
 }

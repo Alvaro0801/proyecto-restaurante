@@ -4,12 +4,14 @@
     <div class="conteiner-fluid">
         <div class="row">
             <div class="col-md-8 p-0">
-                <div class="shadow p-3 box-pedido">
+                <div id="pedido" class="shadow p-3 box-pedido">
                     <h3>Cuenta</h3>
                     <div class="box-orden ms-3">
-                        <h5 class="mb-2">N° Orden: <%= ped[0].id_ped %></h5>
+                        <h5 class="mb-2">N° Orden:
+                            <p class="idPed"><%= ped[0].id_ped %></p>
+                        </h5>
                         <div class="d-flex justify-content">
-                            <p>Mesa: <%= id_mesa %></p>
+                            <p>Cliente: <%= ped[0].nom_cli %></p>
                             <p class="ms-4">Mozo: <%= ped[0].nom_usu %></p>
                         </div>
                         <div class="box-detalle mb-2">
@@ -28,10 +30,19 @@
                             <% } %>
                         </div>
                         <div class="">
-                            <p class="" style="font-size: 1.2rem;">Total: S/. <%= total %></p>
+                            <p class="" style="font-size: 1.2rem;">Total: S/.
+                                <p id="totalPago"><%= total %></p>
+                            </p>
+                        </div>
+                        <div class="">
+                            <p>Por favor seleccione el medio de pago asignado:</p>
+                            <input type="radio" id="efectivo" name="medioPago" value=1>
+                            <label for="efectivo">Efectivo</label><br>
+                            <input type="radio" id="tarjeta" name="medioPago" value=2>
+                            <label for="tarjeta">Tarjeta</label><br>
                         </div>
                         <div class="box-btn d-flex justify-content-center">
-                            <button id="btnPago" class="btn btn-realizar me-3">Pagar</button>
+                            <button id="btnPago" class="btn btn-realizar me-3" type="submit">Pagar</button>
                             <button class="btn btn-cancelar">Cancelar</button>
                         </div>
                     </div>
@@ -40,3 +51,5 @@
         </div>
     </div>
 </main>
+
+<script src="/public/js/cajero/realizarPago.js"></script>
